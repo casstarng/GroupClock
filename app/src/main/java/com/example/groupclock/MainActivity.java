@@ -85,7 +85,11 @@ public class MainActivity extends AppCompatActivity {
 				
 				public void run() {
 					Value item = getItem(position);
-					mainViewholder.time.setText(String.valueOf(System.currentTimeMillis() - item.time));
+					long seconds = (System.currentTimeMillis() - item.time) / 1000;
+					long minutes = seconds / 60;
+					long hours = minutes / 60;
+					String time = hours % 24 + ":" + minutes % 60 + ":" + seconds % 60;
+					mainViewholder.time.setText(time);
 					h.postDelayed(this, 0);
 				}
 				
@@ -130,7 +134,11 @@ public class MainActivity extends AppCompatActivity {
 					if (item.time != 0)
 						item.saved = System.currentTimeMillis() - item.time;
 					item.active = false;
-					mainViewholder.time.setText(String.valueOf(item.saved));
+					long seconds = item.saved / 1000;
+					long minutes = seconds / 60;
+					long hours = minutes / 60;
+					String time = hours % 24 + ":" + minutes % 60 + ":" + seconds % 60;
+					mainViewholder.time.setText(time);
 				}
 			});
 			Value item = getItem(position);
