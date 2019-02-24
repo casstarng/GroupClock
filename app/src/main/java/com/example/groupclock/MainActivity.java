@@ -1,6 +1,7 @@
 package com.example.groupclock;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
@@ -10,6 +11,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -18,8 +20,10 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class MainActivity extends AppCompatActivity {
-	
+public class MainActivity extends AppCompatActivity implements View.OnClickListener {
+	ListView lv;
+	MyListAdapter listAdapter;
+
 	private class Value {
 		int id;
 		String name;
@@ -42,28 +46,44 @@ public class MainActivity extends AppCompatActivity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
-		ListView lv = findViewById(R.id.listview);
+		lv = findViewById(R.id.listview);
 		generateListContent();
-		lv.setAdapter(new MyListAdapter(this, R.layout.list_item, new ArrayList<>(data.values())));
-		
+		listAdapter = new MyListAdapter(this, R.layout.list_item, new ArrayList<>(data.values()));
+		lv.setAdapter(listAdapter);
+
+		Button addBtn = (Button) findViewById(R.id.addBtn);
+		addBtn.setOnClickListener(this);
+	}
+
+	@Override
+	public void onClick(View v) {
+		if(v.getId() == R.id.addBtn){
+			Log.i("test", "t");
+			Intent myIntent = new Intent(this, AddStopwatch.class);
+			startActivity(myIntent);
+		}
 	}
 	
 	private void generateListContent() {
-		for (int i = 0; i < 9; i++) {
+		for (int i = 0; i < 2; i++) {
 			data.put(String.valueOf(i), new Value(i, "List Item " + i));
 		}
 	}
 	
-	private class MyListAdapter extends ArrayAdapter<Value> {
+	class MyListAdapter extends ArrayAdapter<Value> {
 		private int layout;
 		private List<Value> mObjects;
+
+		public void test(){
+
+		}
 		
-		private MyListAdapter(Context context, int resource, List<Value> objects) {
+		MyListAdapter(Context context, int resource, List<Value> objects) {
 			super(context, resource, objects);
 			mObjects = objects;
 			layout = resource;
 		}
-		
+
 		@Override
 		public View getView(final int position, View convertView, ViewGroup parent) {
 			final ViewHolder mainViewholder;

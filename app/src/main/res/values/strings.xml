@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">GroupClock</string>
+    <string name="title_activity_add_timer">AddTimer</string>
 </resources>
